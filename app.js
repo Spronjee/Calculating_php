@@ -20,4 +20,4 @@ console.log(decr);
 let isChecked = true,
     isClosed = true;
     console.log(isChecked || isClosed)
-
+console.log('wiw');
