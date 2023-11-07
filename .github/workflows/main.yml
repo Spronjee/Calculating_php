@@ -1,0 +1,69 @@
+name: Validate changes
+on:
+  pull_request:
+    branches: 
+      [ develop, 'release/**', 'stage/**', main, master]
+
+jobs:
+  fmt-check:
+    runs-on: ubuntu-latest
+    name: Terraform fmt
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: terraform install
+        uses: hashicorp/setup-terraform@v2
+
+      - name: terraform fmt
+        run: |
+          cd terraform
+          terraform fmt -check -recursive  
+        continue-on-error: true
+          
+  validate:
+    runs-on: ubuntu-latest
+    name: Terraform validate
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: terraform install
+        uses: hashicorp/setup-terraform@v2
+
+      - name: terraform validate
+        run: |
+          cd terraform
+          terraform init
+          terraform validate
+
+
+  plan:
+    runs-on: ubuntu-latest
+    name: Terraform plan
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: terraform plan
+        run: |
+          cd terraform
+          terraform init
+          terraform plan -no-color
+          echo ${{ steps.plan.outputs.stdout }}
+          echo ${{ steps.plan.outputs.stderr }}
+          echo ${{ steps.plan.outputs.exitcode }}
+
+#- run: echo ${{ steps.plan.outputs.stdout }}
+#- run: echo ${{ steps.plan.outputs.stderr }}
+#- run: echo ${{ steps.plan.outputs.exitcode }}
+#- uses: hashicorp/setup-terraform@v2
+#- run: terraform fmt
+#- id: fmt
+#  run: terraform plan -no-color
+
+#- run: echo ${{ steps.plan.outputs.stdout }}
+#- run: echo ${{ steps.plan.outputs.stderr }}
+#- run: echo ${{ steps.plan.outputs.exitcode }}  
+
+
