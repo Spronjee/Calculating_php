@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: terraform fmt install
+      - name: terraform install
         uses: hashicorp/setup-terraform@v2
 
       - name: terraform fmt
@@ -28,12 +28,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: terraform validate install
+      - name: terraform install
         uses: hashicorp/setup-terraform@v2
 
       - name: terraform validate
         run: |
           cd terraform
+          terraform init
           terraform validate
 
 
