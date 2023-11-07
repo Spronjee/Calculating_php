@@ -1,31 +1,67 @@
 name: Validate changes
-
 on:
-  push:
-    branches-ignore:
-      - 'main'
+  pull_request:
+    branches: 
+      [ develop, 'release/**', 'stage/**', main ]
 
 jobs:
   fmt-check:
     runs-on: ubuntu-latest
-    name: Check formatting of terraform files
+    name: Terraform fmt
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: terraform fmt install
+        uses: hashicorp/setup-terraform@v2
 
       - name: terraform fmt
-        uses: dflook/terraform-fmt-check@v1
-        with:
-          path: terraform
-
+        run: terraform fmt -check -recursive
+        continue-on-error: true
+          
   validate:
     runs-on: ubuntu-latest
-    name: Validate terraform configuration
+    name: Terraform validate
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: terraform validate install
+        uses: hashicorp/setup-terraform@v2
+
       - name: terraform validate
-        uses: dflook/terraform-validate@v1
-        with:
-          path: terraform
+        run: terraform validate -recursive
+
+
+
+#- uses: hashicorp/setup-terraform@v2
+#- run: terraform fmt
+#- id: fmt
+#  run: terraform plan -no-color
+
+#- run: echo ${{ steps.plan.outputs.stdout }}
+#- run: echo ${{ steps.plan.outputs.stderr }}
+#- run: echo ${{ steps.plan.outputs.exitcode }}  
+
+      
+#defaults:
+#  run:
+#    working-directory: ${{ env.tf_actions_working_dir }}
+#permissions:
+#  pull-requests: write
+#steps:
+#- uses: actions/checkout@v3
+#- uses: hashicorp/setup-terraform@v2
+
+#- name: Terraform fmt
+#  id: fmt
+#run: terraform fmt -check
+#  continue-on-error: true
+
+#- name: Terraform Init
+#  id: init
+#  run: terraform init
+
+#- name: Terraform Validate
+#  id: validate
+# run: terraform validate -no-color
