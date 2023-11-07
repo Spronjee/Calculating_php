@@ -2,7 +2,7 @@ name: Validate changes
 on:
   pull_request:
     branches: 
-      [ develop, 'release/**', 'stage/**', main ]
+      [ develop, 'release/**', 'stage/**', main, master]
 
 jobs:
   fmt-check:
