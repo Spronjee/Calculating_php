@@ -1,8 +1,14 @@
 name: Validate changes
 on:
+  push:
+    branches:
+      - main
+      - develop
+      - master
   pull_request:
     branches: 
       [ develop, 'release/**', 'stage/**', main, master]
+
 
 jobs:
   fmt-check:
