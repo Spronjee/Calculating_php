@@ -30,7 +30,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: terraform validate
-        run: terraform validate -recursive
+        run: terraform validate
 
 
 
