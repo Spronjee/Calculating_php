@@ -14,11 +14,11 @@ jobs:
 
       - name: terraform fmt install
         uses: hashicorp/setup-terraform@v2
-        with:
-          path: terraform
 
       - name: terraform fmt
-        run: terraform fmt -check -recursive
+        run: |
+          cd terraform
+          terraform fmt -check -recursive  
         continue-on-error: true
           
   validate:
@@ -30,12 +30,11 @@ jobs:
 
       - name: terraform validate install
         uses: hashicorp/setup-terraform@v2
-        with:
-          path: terraform
-
 
       - name: terraform validate
-        run: terraform validate
+        run: |
+          cd terraform
+          terraform validate
 
 
 
