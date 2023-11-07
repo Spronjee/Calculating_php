@@ -38,7 +38,25 @@ jobs:
           terraform validate
 
 
+  plan:
+    runs-on: ubuntu-latest
+    name: Terraform plan
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
+      - name: terraform plan
+        run: |
+          cd terraform
+          terraform init
+          terraform plan -no-color
+          echo ${{ steps.plan.outputs.stdout }}
+          echo ${{ steps.plan.outputs.stderr }}
+          echo ${{ steps.plan.outputs.exitcode }}
+
+#- run: echo ${{ steps.plan.outputs.stdout }}
+#- run: echo ${{ steps.plan.outputs.stderr }}
+#- run: echo ${{ steps.plan.outputs.exitcode }}
 #- uses: hashicorp/setup-terraform@v2
 #- run: terraform fmt
 #- id: fmt
@@ -48,25 +66,4 @@ jobs:
 #- run: echo ${{ steps.plan.outputs.stderr }}
 #- run: echo ${{ steps.plan.outputs.exitcode }}  
 
-      
-#defaults:
-#  run:
-#    working-directory: ${{ env.tf_actions_working_dir }}
-#permissions:
-#  pull-requests: write
-#steps:
-#- uses: actions/checkout@v3
-#- uses: hashicorp/setup-terraform@v2
 
-#- name: Terraform fmt
-#  id: fmt
-#run: terraform fmt -check
-#  continue-on-error: true
-
-#- name: Terraform Init
-#  id: init
-#  run: terraform init
-
-#- name: Terraform Validate
-#  id: validate
-# run: terraform validate -no-color
